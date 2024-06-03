@@ -1,7 +1,9 @@
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using WebApplication2.Contexts;
 using WebApplication2.Endpoints;
 using WebApplication2.Services;
+using WebApplication2.Validators;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +15,8 @@ builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddDbContext<DatabaseContext>(opt =>
     opt.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
+
+builder.Services.AddValidatorsFromAssemblyContaining<NewProductValidator>();
 
 
 var app = builder.Build();

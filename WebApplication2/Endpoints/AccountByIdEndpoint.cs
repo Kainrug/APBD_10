@@ -1,3 +1,4 @@
+using FluentValidation;
 using WebApplication2.DTO_S;
 using WebApplication2.Exceptions;
 using WebApplication2.ResponseModels;
@@ -27,8 +28,14 @@ public static class AccountByIdEndpoint
         }
     }
     
-    private static async Task<IResult> AddProduct(AddProductDTO newProduct, IProductService db)
+    private static async Task<IResult> AddProduct(AddProductDTO newProduct, IProductService db, IValidator<AddProductDTO> validator)
     {
+        
+        var validate = await validator.ValidateAsync(newProduct);
+        if (!validate.IsValid)
+        {
+            return Results.ValidationProblem(validate.ToDictionary());
+        }
         try
         {
             await db.AddProductAsync(newProduct);

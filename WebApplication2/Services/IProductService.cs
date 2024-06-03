@@ -16,11 +16,6 @@ public class ProductService(DatabaseContext context) : IProductService {
 
     public async Task AddProductAsync(AddProductDTO addProduct)
     {
-        if (addProduct.Name is null)
-        {
-            throw new AddProductException("You must type product name");
-        }
-
         
         foreach (var productCategory in addProduct.ProductCategories)
         {
